@@ -8,6 +8,7 @@ use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\PacienteSPController;
 use App\Http\Controllers\ConsultaSPController;
+use App\Http\Controllers\ReportesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -37,3 +38,13 @@ Route::get('/fn/stock/{id}', function($id){
     $msg = $result[0]->msg ?? 'Sin respuesta';
     return view('fn.stock', compact('msg'));
 });
+
+// Menú Principal
+Route::get('/reportes', [ReportesController::class, 'index'])->name('reportes.index');
+
+// Rutas individuales para cada vista
+Route::get('/reportes/citas', [ReportesController::class, 'verCitas'])->name('reportes.citas');
+Route::get('/reportes/historial', [ReportesController::class, 'verHistorial'])->name('reportes.historial');
+Route::get('/reportes/medicos', [ReportesController::class, 'verMedicos'])->name('reportes.medicos');
+Route::get('/reportes/facturas', [ReportesController::class, 'verFacturas'])->name('reportes.facturas');
+Route::get('/reportes/recetas', [ReportesController::class, 'verRecetas'])->name('reportes.recetas');
