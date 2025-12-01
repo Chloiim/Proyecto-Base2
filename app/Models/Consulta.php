@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Consulta extends Model
 {
     protected $table = 'Consulta';
-    protected $primaryKey = 'idConsult';
+    protected $primaryKey = 'idConsul';
     public $timestamps = false;
 
     protected $fillable = [

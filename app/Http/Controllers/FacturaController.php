@@ -50,7 +50,8 @@ class FacturaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $factura = Factura::findOrFail($id);
+        return view('facturas.show', compact('factura'));
     }
 
     /**

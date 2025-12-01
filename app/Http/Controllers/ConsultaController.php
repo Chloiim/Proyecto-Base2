@@ -52,7 +52,8 @@ class ConsultaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $consulta = Consulta::findOrFail($id);
+        return view('consultas.show', compact('consulta'));
     }
 
     /**

@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Factura extends Model
 {
     protected $table = 'Factura';
-    protected $primaryKey = 'idFactura';
+    protected $primaryKey = 'idFac';
     public $timestamps = false;
 
     protected $fillable = [
-        'fechaFactura','montoFactura','idConsult','idPacient'
+        'fechaEmisionFac','montoTotal','idConsul','idPacient'
     ];
 
     public function paciente(){ return $this->belongsTo(Paciente::class,'idPacient'); }
-    public function consulta(){ return $this->belongsTo(Consulta::class,'idConsult'); }
+    public function consulta(){ return $this->belongsTo(Consulta::class,'idConsul'); }
 }

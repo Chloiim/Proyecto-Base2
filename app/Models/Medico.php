@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Medico extends Model
 {
-    protected $table = 'Medico';
+    protected $table = 'medico';
     protected $primaryKey = 'idMedic';
     public $timestamps = false;
 
     protected $fillable = [
         'nombresMedic','apellidosMedic','dniMedic',
-        'especialidadMedic','telefonoMedic','emailMedic'
+        'especialidadMedic','colegiaturaMedic','telefonoMedic','emailMedic','idArea'
     ];
 }

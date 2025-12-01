@@ -32,6 +32,12 @@ class MedicoController extends Controller
         $request->validate([
             'nombresMedic' => 'required',
             'apellidosMedic' => 'required',
+            'dniMedic' => 'required',
+            'especialidadMedic' => 'required',
+            'colegiaturaMedic' => 'required',
+            'telefonoMedic' => 'required',
+            'emailMedic' => 'required',
+            'idArea' => 'required',
         ]);
 
         Medico::create($request->all());
