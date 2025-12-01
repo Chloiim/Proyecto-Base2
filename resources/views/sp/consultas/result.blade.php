@@ -10,7 +10,7 @@
   <tbody>
     @forelse($rows as $r)
       <tr>
-        <td>{{ $r->idConsult }}</td>
+        <td>{{ $r->idConsul }}</td>
         <td>{{ $r->fechaConsult }}</td>
         <td>{{ $r->nombresPacient }} {{ $r->apellidosPacient }}</td>
         <td>{{ $r->nombresMedic }} {{ $r->apellidosMedic }}</td>

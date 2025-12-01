@@ -30,3 +30,10 @@ Route::post('/sp/paciente/store', [PacienteSPController::class, 'store'])->name(
 //Ejemplo 2 — CALL a SP SELECT que devuelve filas
 Route::get('/sp/consultas/buscar', [ConsultaSPController::class,'form'])->name('sp.consultas.form');
 Route::post('/sp/consultas/result', [ConsultaSPController::class,'buscar'])->name('sp.consultas.buscar');
+
+//Ejemplo 3 — Llamar a una FUNCIÓN SQL que devuelve texto
+Route::get('/fn/stock/{id}', function($id){
+    $result = DB::select('SELECT fn_mensaje_stock(?) as msg', [$id]);
+    $msg = $result[0]->msg ?? 'Sin respuesta';
+    return view('fn.stock', compact('msg'));
+});
