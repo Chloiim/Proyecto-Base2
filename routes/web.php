@@ -9,6 +9,8 @@ use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\PacienteSPController;
 use App\Http\Controllers\ConsultaSPController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\BusquedasController;
+use App\Http\Controllers\InfoSistemaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,7 +21,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('pacientes', PacienteController::class);
-Route::resource('medicos', MedicoController::class);
+//Route::resource('medicos', MedicoController::class);
 Route::resource('citas', CitaController::class);
 Route::resource('consultas', ConsultaController::class);
 Route::resource('facturas', FacturaController::class);
@@ -38,7 +40,7 @@ Route::get('/fn/stock/{id}', function($id){
     $msg = $result[0]->msg ?? 'Sin respuesta';
     return view('fn.stock', compact('msg'));
 });
-
+//-------------------------------------------------------------------------------------------------------------
 // Menú Principal
 Route::get('/reportes', [ReportesController::class, 'index'])->name('reportes.index');
 
@@ -48,3 +50,15 @@ Route::get('/reportes/historial', [ReportesController::class, 'verHistorial'])->
 Route::get('/reportes/medicos', [ReportesController::class, 'verMedicos'])->name('reportes.medicos');
 Route::get('/reportes/facturas', [ReportesController::class, 'verFacturas'])->name('reportes.facturas');
 Route::get('/reportes/recetas', [ReportesController::class, 'verRecetas'])->name('reportes.recetas');
+
+// Rutas para Medico usando procedimientos almacenados
+Route::resource('medicos', MedicoController::class);
+
+// Rutas para búsquedas avanzadas usando procedimientos almacenados
+Route::get('/busquedas', [BusquedasController::class, 'index'])->name('busquedas.index');
+Route::get('/busquedas/citas', [BusquedasController::class, 'buscarCitas'])->name('busquedas.citas');
+Route::get('/busquedas/historial', [BusquedasController::class, 'buscarHistorial'])->name('busquedas.historial');
+Route::get('/busquedas/facturas', [BusquedasController::class, 'buscarFacturas'])->name('busquedas.facturas');
+
+// Rutas para InfoSistemaController que usa funciones
+Route::get('/info-sistema', [InfoSistemaController::class, 'index'])->name('info.sistema');

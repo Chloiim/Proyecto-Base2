@@ -1,32 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-<h2>Médicos</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Gestión de Médicos</h2>
+        <a href="{{ route('medicos.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Médico
+        </a>
+    </div>
 
-<a href="{{ route('medicos.create') }}" class="btn btn-primary mb-3">Nuevo Médico</a>
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th><th>Nombres</th><th>Apellidos</th><th>Especialidad</th><th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($medicos as $m)
-        <tr>
-            <td>{{ $m->idMedic }}</td>
-            <td>{{ $m->nombresMedic }}</td>
-            <td>{{ $m->apellidosMedic }}</td>
-            <td>{{ $m->especialidadMedic }}</td>
-            <td>
-                <a href="{{ route('medicos.edit',$m->idMedic) }}" class="btn btn-warning btn-sm">Editar</a>
-                <form action="{{ route('medicos.destroy',$m->idMedic) }}" method="POST" style="display:inline;">
-                    @csrf @method('DELETE')
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>DNI</th>
+                        <th>Nombre Completo</th>
+                        <th>Especialidad</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($medicos as $medico)
+                    <tr>
+                        <td>{{ $medico->dniMedic }}</td>
+                        <td>{{ $medico->nombresMedic }} {{ $medico->apellidosMedic }}</td>
+                        <td>{{ $medico->especialidadMedic }}</td>
+                        <td>{{ $medico->telefonoMedic }}</td>
+                        <td class="text-center">
+                            <a href="{{ route('medicos.edit', $medico->idMedic) }}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+
+                            <form action="{{ route('medicos.destroy', $medico->idMedic) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de eliminar este médico?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">
+                {{ $medicos->links() }}
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

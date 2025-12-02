@@ -3,83 +3,78 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Medico;
+use Illuminate\Support\Facades\DB;
+use App\Models\Medico; // Asegúrate de tener un modelo Medico básico
 
 class MedicoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Listar médicos (Vista normal)
     public function index()
     {
-        $medicos = Medico::all();
+        // Puedes usar Eloquent normal para listar, o una vista SQL si prefieres
+        $medicos = DB::table('Medico')->paginate(1000);
         return view('medicos.index', compact('medicos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Mostrar formulario de creación
     public function create()
     {
-        return view('medicos.create');
+        // Necesitamos las áreas para el select
+        $areas = DB::table('Area')->get(); 
+        return view('medicos.create', compact('areas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // 1. INVOCAR PROCEDIMIENTO DE INSERCIÓN
     public function store(Request $request)
     {
-        $request->validate([
-            'nombresMedic' => 'required',
-            'apellidosMedic' => 'required',
-            'dniMedic' => 'required',
-            'especialidadMedic' => 'required',
-            'colegiaturaMedic' => 'required',
-            'telefonoMedic' => 'required',
-            'emailMedic' => 'required',
-            'idArea' => 'required',
+        $sql = "CALL sp_InsertarMedico(?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        DB::statement($sql, [
+            $request->nombres,
+            $request->apellidos,
+            $request->dni,
+            $request->especialidad,
+            $request->colegiatura,
+            $request->telefono,
+            $request->email,
+            $request->idArea
         ]);
 
-        Medico::create($request->all());
-
-        return redirect()->route('medicos.index')->with('success','Médico registrado.');
+        return redirect()->route('medicos.index')->with('success', 'Médico registrado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Mostrar formulario de edición
+    public function edit($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $medico = Medico::findOrFail($id);
+        $medico = DB::table('Medico')->where('idMedic', $id)->first();
         return view('medicos.edit', compact('medico'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // 2. INVOCAR PROCEDIMIENTO DE ACTUALIZACIÓN
+    public function update(Request $request, $id)
     {
-        $medico = Medico::findOrFail($id);
-        $medico->update($request->all());
+        $sql = "CALL sp_ActualizarMedico(?, ?, ?, ?, ?, ?, ?)";
+        
+        DB::statement($sql, [
+            $id,
+            $request->nombres,
+            $request->apellidos,
+            $request->dni,
+            $request->especialidad,
+            $request->telefono,
+            $request->email
+        ]);
 
-        return redirect()->route('medicos.index')->with('success','Médico actualizado.');
+        return redirect()->route('medicos.index')->with('success', 'Médico actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // 3. INVOCAR PROCEDIMIENTO DE ELIMINACIÓN
+    public function destroy($id)
     {
-        Medico::findOrFail($id)->delete();
+        $sql = "CALL sp_EliminarMedico(?)";
+        
+        DB::statement($sql, [$id]);
 
-        return redirect()->route('medicos.index')->with('success','Médico eliminado.');
+        return redirect()->route('medicos.index')->with('success', 'Médico eliminado del sistema.');
     }
 }
