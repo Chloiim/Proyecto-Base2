@@ -12,6 +12,7 @@ use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\BusquedasController;
 use App\Http\Controllers\MensajesInteractivoController;
 use App\Http\Controllers\TestTriggersController;
+use App\Http\Controllers\AuditoriaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -73,3 +74,23 @@ Route::post('/test-triggers/cita', [TestTriggersController::class, 'testCitaPasa
 Route::post('/test-triggers/factura', [TestTriggersController::class, 'testModificarFactura'])->name('triggers.testFactura');
 Route::post('/test-triggers/historial', [TestTriggersController::class, 'testEliminarHistorial'])->name('triggers.testHistorial');
 Route::post('/test-triggers/precio', [TestTriggersController::class, 'testAuditoriaPrecio'])->name('triggers.testPrecio');
+
+// Rutas para auditoría mediante triggers de medicamentos y pacientes
+// Vista principal (Tabla de Auditoría)
+Route::get('/auditoria-sistema', [AuditoriaController::class, 'index'])->name('auditoria.index');
+
+// Rutas para GESTIONAR PACIENTES (Esto disparará los triggers)
+Route::get('/auditoria/paciente/crear', [AuditoriaController::class, 'create'])->name('auditoria.create');
+Route::post('/auditoria/paciente/guardar', [AuditoriaController::class, 'store'])->name('auditoria.store');
+Route::get('/auditoria/paciente/editar/{id}', [AuditoriaController::class, 'edit'])->name('auditoria.edit');
+Route::put('/auditoria/paciente/actualizar/{id}', [AuditoriaController::class, 'update'])->name('auditoria.update');
+Route::get('/auditoria/paciente/eliminar', [AuditoriaController::class, 'deleteList'])->name('auditoria.deleteList'); // Listado para elegir a quién borrar
+Route::delete('/auditoria/paciente/destruir/{id}', [AuditoriaController::class, 'destroy'])->name('auditoria.destroy');
+
+//rutas medicamento (Para los nuevos Triggers)
+Route::get('/auditoria/med/crear', [AuditoriaController::class, 'createMed'])->name('auditoria.createMed');
+Route::post('/auditoria/med/guardar', [AuditoriaController::class, 'storeMed'])->name('auditoria.storeMed');
+Route::get('/auditoria/med/editar/{id}', [AuditoriaController::class, 'editMed'])->name('auditoria.editMed');
+Route::put('/auditoria/med/actualizar/{id}', [AuditoriaController::class, 'updateMed'])->name('auditoria.updateMed');
+Route::get('/auditoria/med/eliminar', [AuditoriaController::class, 'deleteListMed'])->name('auditoria.deleteListMed');
+Route::delete('/auditoria/med/destruir/{id}', [AuditoriaController::class, 'destroyMed'])->name('auditoria.destroyMed');
