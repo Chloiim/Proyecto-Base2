@@ -10,7 +10,8 @@ use App\Http\Controllers\PacienteSPController;
 use App\Http\Controllers\ConsultaSPController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\BusquedasController;
-use App\Http\Controllers\InfoSistemaController;
+use App\Http\Controllers\MensajesInteractivoController;
+use App\Http\Controllers\TestTriggersController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,5 +61,15 @@ Route::get('/busquedas/citas', [BusquedasController::class, 'buscarCitas'])->nam
 Route::get('/busquedas/historial', [BusquedasController::class, 'buscarHistorial'])->name('busquedas.historial');
 Route::get('/busquedas/facturas', [BusquedasController::class, 'buscarFacturas'])->name('busquedas.facturas');
 
-// Rutas para InfoSistemaController que usa funciones
-Route::get('/info-sistema', [InfoSistemaController::class, 'index'])->name('info.sistema');
+// Rutas para mensajes del sistema usando funciones SQL
+Route::get('/probador-funciones', [MensajesInteractivoController::class, 'index'])->name('mensajes.interactivo');
+Route::post('/probador/alergia', [MensajesInteractivoController::class, 'verificarAlergia'])->name('probador.alergia');
+Route::post('/probador/stock', [MensajesInteractivoController::class, 'verificarStock'])->name('probador.stock');
+Route::post('/probador/cobranza', [MensajesInteractivoController::class, 'verificarCobranza'])->name('probador.cobranza');
+
+// Rutas para pruebas de Triggers
+Route::get('/test-triggers', [TestTriggersController::class, 'index'])->name('triggers.index');
+Route::post('/test-triggers/cita', [TestTriggersController::class, 'testCitaPasada'])->name('triggers.testCita');
+Route::post('/test-triggers/factura', [TestTriggersController::class, 'testModificarFactura'])->name('triggers.testFactura');
+Route::post('/test-triggers/historial', [TestTriggersController::class, 'testEliminarHistorial'])->name('triggers.testHistorial');
+Route::post('/test-triggers/precio', [TestTriggersController::class, 'testAuditoriaPrecio'])->name('triggers.testPrecio');
